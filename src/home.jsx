@@ -18,7 +18,7 @@ import {
 import { auth } from './firebase'; // Your firebase config
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function Home() {
   const [userdata, setUserdata] = useState(null);

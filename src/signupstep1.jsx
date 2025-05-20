@@ -6,7 +6,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { auth, db } from './firebase';  // Correctly import 'auth' and 'db' from 'firebase.js'
 import { updatePassword } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function SignupStep1() {
   const [password, setPassword] = useState('');

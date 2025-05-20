@@ -1,4 +1,4 @@
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo2.png';
+import logo from '../assets/logo2.png';
 
 export default function LoadingScreen() {
     return (

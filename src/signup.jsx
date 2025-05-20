@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, db, createUserWithEmailAndPassword, setDoc, doc } from './firebase'; // Import Firebase functions
 
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function SignUp() {
   const navigate = useNavigate();

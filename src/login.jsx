@@ -4,7 +4,7 @@ import { auth, db } from './firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Eye, EyeOff } from 'lucide-react';
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function Login() {
   const navigate = useNavigate();

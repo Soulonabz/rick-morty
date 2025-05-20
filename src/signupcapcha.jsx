@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import logo from 'C:/Users/Ryu/rick-morty/src/assets/logo.png';
+import logo from '../assets/logo.png';
 
 export default function SignupCaptcha() {
   const navigate = useNavigate();
