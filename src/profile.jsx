@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronRight, ChevronDown, Search } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from './assets/logo.png';
 
 export default function Profile() {
   return (

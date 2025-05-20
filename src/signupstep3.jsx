@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from './firebase'; // Adjust the path if needed
 import { doc, updateDoc } from 'firebase/firestore';
 import emailjs from 'emailjs-com'; // Import emailjs
-import logo from '../assets/logo.png';
+import logo from './assets/logo.png';
 
 export default function SignupStep3() {
   const navigate = useNavigate();

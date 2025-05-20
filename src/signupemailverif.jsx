@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { auth } from './firebase';
 import emailjs from 'emailjs-com';
-import logo from '../assets/logo.png';
+import logo from './assets/logo.png';
 
 export default function SignupEmailVerif() {
   const location = useLocation();

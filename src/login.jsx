@@ -4,7 +4,7 @@ import { auth, db } from './firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Eye, EyeOff } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo from './assets/logo.png';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ export default function Login() {
 
         <div className="flex items-center justify-center text-zinc-500 my-4">
           <hr className="flex-grow border-zinc-700" />
-          <span className="px-2 text-sm">Use Email / Username</span>
+          <span className="px-2 text-sm">Use Email</span>
           <hr className="flex-grow border-zinc-700" />
         </div>
 
@@ -88,7 +88,7 @@ export default function Login() {
           type="text"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="Email or Username"
+          placeholder="Email"
           className="w-full px-4 py-2 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-white"
         />
 

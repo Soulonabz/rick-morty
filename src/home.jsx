@@ -18,7 +18,7 @@ import {
 import { auth } from './firebase'; // Your firebase config
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from './assets/logo.png';
 
 export default function Home() {
   const [userdata, setUserdata] = useState(null);
@@ -173,7 +173,7 @@ export default function Home() {
               </button>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-red-700 hover:bg-red-800 focus:outline-none"
+                className="w-full text-left px-4 py-2 text-red-700 hover:bg-zinc-700 focus:outline-none"
               >
                 Logout
               </button>
