@@ -19,6 +19,12 @@ import { auth } from './firebase'; // Your firebase config
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import logo from './assets/logo.png';
+import { artists } from './data/artist.jsx';
+import { albums } from './data/albums.jsx';
+import { songs } from './data/songs.jsx';
+import { podcasts } from './data/podcast.jsx';
+import { Pause } from 'lucide-react';
+
 
 export default function Home() {
   const [userdata, setUserdata] = useState(null);
@@ -27,12 +33,124 @@ export default function Home() {
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredResults, setFilteredResults] = useState([]);
+
+  const [currentSong, setCurrentSong] = useState(null); // {id, title, artist, url, cover} for song
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+useEffect(() => {
+  if (!audioRef.current) {
+    audioRef.current = new Audio();
+  }
+}, []);
 
   const navigate = useNavigate();
 
   // Close dropdowns if clicked outside
   const bellRef = useRef(null);
   const accountRef = useRef(null);
+
+
+  useEffect(() => {
+  if (searchTerm.trim() === '') {
+    setFilteredResults([]);
+    return;
+  }
+
+  // Combine all data with a 'type' label for UI clarity
+  // Combine all data into one array, normalizing fields
+const combined = [
+  ...artists.map(a => ({
+    id: a.id,
+    searchText: a.name.toLowerCase(),
+    displayText: a.name,
+    image: a.image,
+    type: "artist",
+  })),
+  ...albums.map(a => ({
+    id: a.id,
+    searchText: a.title.toLowerCase(),
+    displayText: a.title,
+    image: a.cover,
+    type: "album",
+  })),
+  ...songs.map(s => ({
+    id: s.id,
+    searchText: s.title.toLowerCase(),
+    displayText: s.title,
+    type: "song",
+  })),
+  ...podcasts.map(p => ({
+    id: p.id,
+    searchText: p.title.toLowerCase(),
+    displayText: p.title,
+    image: p.image,
+    type: "podcast",
+  })),
+];
+
+// Then filter based on user input, also lowercased
+const filtered = combined.filter(item =>
+  item.searchText.includes(searchTerm.toLowerCase())
+);
+
+
+  setFilteredResults(filtered);
+}, [searchTerm]);
+
+
+  // Play the song when currentSong changes
+  useEffect(() => {
+  if (currentSong && currentSong.url) {
+    audioRef.current.src = currentSong.url;
+    audioRef.current.play().catch(err => {
+      console.error('Playback error:', err);
+    });
+    setIsPlaying(true);
+  }
+}, [currentSong]);
+
+
+  // Play/pause toggle function
+  const togglePlayPause = () => {
+    if (!currentSong) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  // When clicking on a search result
+  const handleSelectItem = (item) => {
+  console.log('Clicked item:', item);
+  
+  if (item.type === "song") {
+    const fullSong = songs.find(song => song.id === item.id);
+    console.log('Found song:', fullSong);
+    
+    if (!fullSong) {
+      console.error('Song not found with id:', item.id);
+      return;
+    }
+    if (!fullSong.url) {
+      console.error('Selected song does not have a valid URL:', fullSong);
+      return;
+    }
+    
+    setCurrentSong(fullSong);
+    setSearchTerm('');
+    setFilteredResults([]);
+  } else {
+    setSearchTerm('');
+    setFilteredResults([]);
+  }
+};
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,7 +163,7 @@ export default function Home() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (bellRef.current && !bellRef.current.contains(event.target)) {
-        setShowBellDropdown(false);
+        setShowBellDropdown(false); 
       }
       if (accountRef.current && !accountRef.current.contains(event.target)) {
         setShowAccountDropdown(false);
@@ -58,6 +176,10 @@ export default function Home() {
   function toggleNotifications() {
     setNotificationsEnabled((prev) => !prev);
   }
+
+  function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
   function handleLogout() {
     setIsLoggingOut(true);
@@ -105,14 +227,36 @@ export default function Home() {
         </div>
 
         {/* Search Box */}
-        <div className={`flex items-center rounded-full px-4 py-2 w-1/2 ${inputBg}`}>
-          <Search size={16} className="mr-2" />
-          <input
-            type="text"
-            placeholder="Search"
-            className={`bg-transparent outline-none w-full text-sm ${darkMode ? 'placeholder:text-zinc-400' : 'placeholder:text-gray-500'}`}
-          />
+<div className={`flex items-center rounded-full px-4 py-2 w-1/2 ${inputBg} relative`}>
+  <Search size={16} className="mr-2" />
+  <input
+    type="text"
+    placeholder="Search albums, artists, songs, podcasts..."
+    className={`bg-transparent outline-none w-full text-sm ${darkMode ? 'placeholder:text-zinc-400' : 'placeholder:text-gray-500'}`}
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+
+  {/* Dropdown */}
+  {filteredResults.length > 0 && (
+    <div
+      className={`absolute top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto rounded-lg shadow-lg ${dropdownBg} z-50`}
+    >
+      {filteredResults.map((item) => (
+        <div
+          key={`${item.type}-${item.id}`}
+          className={`px-4 py-2 cursor-pointer hover:${darkMode ? 'bg-zinc-700' : 'bg-gray-300'}`}
+          onClick={() => handleSelectItem(item)}
+        >
+          <span className="font-semibold">{item.displayText}</span>{' '}
+          <small>({capitalizeFirstLetter(item.type)})</small>
         </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
 
         {/* Right Icons */}
         <div className="flex items-center space-x-4">
@@ -285,44 +429,29 @@ export default function Home() {
       </div>
 
       {/* Bottom Player Bar */}
-      <div className={`${navBg} flex items-center justify-between rounded-2xl p-2`}>
+      <div className={`${navBg} flex items-center justify-between rounded-2xl p-2 mt-4`}>
         {/* Left: Song Info */}
         <div className="flex items-center space-x-2">
           <div className="w-14 h-14 rounded-lg overflow-hidden bg-zinc-700">
-            {/* Album art */}
+            {currentSong && currentSong.cover && (
+              <img
+                src={currentSong.cover}
+                alt={currentSong.displayText}
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold">Song Title</span>
-            <span className="text-xs text-zinc-400">Artist Name</span>
+            <span className="text-sm font-semibold">{currentSong ? currentSong.displayText : "No song playing"}</span>
+            <span className="text-xs text-zinc-400">{currentSong && currentSong.artist ? currentSong.artist : "-"}</span>
           </div>
-          <button className="ml-2">
-            <Play size={20} />
+          <button className="ml-2" onClick={togglePlayPause}>
+            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
           </button>
         </div>
 
-        {/* Center: Controls */}
-        <div className="flex items-center space-x-4">
-          <Shuffle size={20} className="cursor-pointer" />
-          <SkipBack size={20} className="cursor-pointer" />
-          <button className="p-3 bg-white rounded-full text-black">
-            <Play size={24} />
-          </button>
-          <SkipForward size={20} className="cursor-pointer" />
-          <Mic size={20} className="cursor-pointer" />
-          <ListMusic size={20} className="cursor-pointer" />
-        </div>
-
-        {/* Right: Volume */}
-        <div className="flex items-center space-x-2">
-          <Volume2 size={20} />
-          <input
-            type="range"
-            min="0"
-            max="100"
-            defaultValue="50"
-            className="w-24"
-          />
-        </div>
+        {/* Center & Right controls */}
+        {/* You can keep your other controls here */}
       </div>
     </div>
   );
