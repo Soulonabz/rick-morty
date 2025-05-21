@@ -51,6 +51,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/callback" element={<SpotifyCallBack />} />
         <Route path="/testinggrounds" element={<TestingGrounds />} />
+        <Route path="/song/:id" element={<SongPlayer />} />
       </Routes>
     </Router>
   );

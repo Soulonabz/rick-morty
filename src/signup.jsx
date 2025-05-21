@@ -63,23 +63,6 @@ export default function SignUp() {
           <hr className="flex-grow border-zinc-700" />
         </div>
 
-        <div className="space-y-3">
-          <div className="bg-zinc-800 rounded-full py-2 cursor-pointer hover:bg-zinc-700 transition">
-            Continue with Google
-          </div>
-          <div className="bg-zinc-800 rounded-full py-2 cursor-pointer hover:bg-zinc-700 transition">
-            Continue with Facebook
-          </div>
-          <div className="bg-zinc-800 rounded-full py-2 cursor-pointer hover:bg-zinc-700 transition">
-            Continue with Instagram
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center text-zinc-500 my-4">
-          <hr className="flex-grow border-zinc-700" />
-          <hr className="flex-grow border-zinc-700" />
-        </div>
-
         <p className="text-sm text-zinc-400">
           Already have an account?{' '}
           <span className="text-red-900 cursor-pointer hover:underline">

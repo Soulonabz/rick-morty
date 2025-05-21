@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { auth } from './firebase';
 import emailjs from 'emailjs-com';
 import logo from './assets/logo.png';
 
 export default function SignupEmailVerif() {
   const location = useLocation();
+  const navigate = useNavigate();
   const initialCode = location.state?.verificationCode;
 
   const [timer, setTimer] = useState(120);
@@ -64,26 +65,15 @@ export default function SignupEmailVerif() {
 
   const handleContinue = () => {
     if (verificationCode === String(expectedCode)) {
-      // Redirect to Spotify OAuth flow after successful email verification
-      redirectToSpotifyOAuth();
+      // ✅ Redirect to Login page after successful email verification
+      navigate('/login');
     } else {
       setError('The verification code is incorrect. Please try again.');
     }
   };
 
-  const redirectToSpotifyOAuth = async () => {
-    try {
-      // Redirect to Spotify OAuth Flow to get the access token
-      window.location.href = `https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=token&redirect_uri=${encodeURIComponent('http://localhost:3000/spotify-callback')}&scope=YOUR_SCOPES`;
-    } catch (error) {
-      console.error('Error redirecting to Spotify OAuth:', error);
-      setError('Failed to initiate Spotify OAuth flow.');
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-700 to-zinc-900 px-4 pt-8 text-white">
-      {/* Logo and Text */}
       <div className="flex items-center mb-6 w-full">
         <img src={logo} alt="TuneMusic Logo" className="w-16 h-16 rounded-full mr-3" />
         <p className="text-2xl font-semibold">Tunemusic</p>

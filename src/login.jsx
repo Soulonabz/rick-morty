@@ -68,8 +68,6 @@ export default function Login() {
         <h2 className="text-2xl font-semibold">Login to Tunemusic</h2>
 
         <div className="space-y-3">
-          <div className="bg-zinc-800 rounded-full py-2 cursor-pointer hover:bg-zinc-700 transition">Continue with Google</div>
-          <div className="bg-zinc-800 rounded-full py-2 cursor-pointer hover:bg-zinc-700 transition">Continue with Facebook</div>
           <div
             onClick={handleSpotifyLogin}
             className="bg-green-600 rounded-full py-2 cursor-pointer hover:bg-green-700 transition"
