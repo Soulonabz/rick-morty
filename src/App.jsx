@@ -12,7 +12,7 @@ import Home from './home';
 import Profile from './profile';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase auth
 import SpotifyCallBack from './spotifycallback';
-import TestingGrounds from './testinggrounds';
+import SongPlayer from './songplayer';
 
 
 function App() {
@@ -50,7 +50,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/callback" element={<SpotifyCallBack />} />
-        <Route path="/testinggrounds" element={<TestingGrounds />} />
+        <Route path="/songplayer" element={<SongPlayer />} />
       </Routes>
     </Router>
   );

@@ -70,8 +70,7 @@ export default function Login() {
         <div className="space-y-3">
           <div
             onClick={handleSpotifyLogin}
-            className="bg-green-600 rounded-full py-2 cursor-pointer hover:bg-green-700 transition"
-          >
+            className="bg-green-600 rounded-full py-2 cursor-pointer hover:bg-green-700 transition">
             Continue with Spotify
           </div>
         </div>

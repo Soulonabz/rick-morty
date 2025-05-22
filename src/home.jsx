@@ -7,13 +7,6 @@ import {
   Plus,
   ChevronDown,
   Music,
-  Play,
-  Shuffle,
-  SkipBack,
-  SkipForward,
-  Mic,
-  ListMusic,
-  Volume2,
 } from 'lucide-react';
 import { auth } from './firebase'; // Your firebase config
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -23,7 +16,6 @@ import { artists } from './data/artist.jsx';
 import { albums } from './data/albums.jsx';
 import { songs } from './data/songs.jsx';
 import { podcasts } from './data/podcast.jsx';
-import { Pause } from 'lucide-react';
 
 
 export default function Home() {
@@ -35,16 +27,6 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
-
-  const [currentSong, setCurrentSong] = useState(null); // {id, title, artist, url, cover} for song
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
-
-useEffect(() => {
-  if (!audioRef.current) {
-    audioRef.current = new Audio();
-  }
-}, []);
 
   const navigate = useNavigate();
 
@@ -77,10 +59,11 @@ const combined = [
     type: "album",
   })),
   ...songs.map(s => ({
-    id: s.id,
-    searchText: s.title.toLowerCase(),
-    displayText: s.title,
-    type: "song",
+  id: s.id,
+  searchText: s.title.toLowerCase(),
+  displayText: s.title,
+  type: "song",
+  fullData: s, // 👈 attach full song object here
   })),
   ...podcasts.map(p => ({
     id: p.id,
@@ -101,54 +84,13 @@ const filtered = combined.filter(item =>
 }, [searchTerm]);
 
 
-  // Play the song when currentSong changes
-  useEffect(() => {
-  if (currentSong && currentSong.url) {
-    audioRef.current.src = currentSong.url;
-    audioRef.current.play().catch(err => {
-      console.error('Playback error:', err);
-    });
-    setIsPlaying(true);
-  }
-}, [currentSong]);
-
-
-  // Play/pause toggle function
-  const togglePlayPause = () => {
-    if (!currentSong) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  // When clicking on a search result
-  const handleSelectItem = (item) => {
-  console.log('Clicked item:', item);
-  
+    // When clicking on a search result
+    const handleSelectItem = (item) => {
   if (item.type === "song") {
-    const fullSong = songs.find(song => song.id === item.id);
-    console.log('Found song:', fullSong);
-    
-    if (!fullSong) {
-      console.error('Song not found with id:', item.id);
-      return;
-    }
-    if (!fullSong.url) {
-      console.error('Selected song does not have a valid URL:', fullSong);
-      return;
-    }
-    
-    setCurrentSong(fullSong);
-    setSearchTerm('');
-    setFilteredResults([]);
-  } else {
-    setSearchTerm('');
-    setFilteredResults([]);
+    navigate('/songplayer', { state: { song: item.fullData } });
   }
+  setSearchTerm('');
+  setFilteredResults([]);
 };
 
 
@@ -426,32 +368,6 @@ const filtered = combined.filter(item =>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Bottom Player Bar */}
-      <div className={`${navBg} flex items-center justify-between rounded-2xl p-2 mt-4`}>
-        {/* Left: Song Info */}
-        <div className="flex items-center space-x-2">
-          <div className="w-14 h-14 rounded-lg overflow-hidden bg-zinc-700">
-            {currentSong && currentSong.cover && (
-              <img
-                src={currentSong.cover}
-                alt={currentSong.displayText}
-                className="w-full h-full object-cover"
-              />
-            )}
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">{currentSong ? currentSong.displayText : "No song playing"}</span>
-            <span className="text-xs text-zinc-400">{currentSong && currentSong.artist ? currentSong.artist : "-"}</span>
-          </div>
-          <button className="ml-2" onClick={togglePlayPause}>
-            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-          </button>
-        </div>
-
-        {/* Center & Right controls */}
-        {/* You can keep your other controls here */}
       </div>
     </div>
   );
