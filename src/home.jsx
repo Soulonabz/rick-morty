@@ -169,36 +169,34 @@ const filtered = combined.filter(item =>
         </div>
 
         {/* Search Box */}
-<div className={`flex items-center rounded-full px-4 py-2 w-1/2 ${inputBg} relative`}>
-  <Search size={16} className="mr-2" />
-  <input
-    type="text"
-    placeholder="Search albums, artists, songs, podcasts..."
-    className={`bg-transparent outline-none w-full text-sm ${darkMode ? 'placeholder:text-zinc-400' : 'placeholder:text-gray-500'}`}
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
+        <div className={`flex items-center rounded-full px-4 py-2 w-1/2 ${inputBg} relative`}>
+          <Search size={16} className="mr-2" />
+          <input
+            type="text"
+            placeholder="Search albums, artists, songs, podcasts..."
+            className={`bg-transparent outline-none w-full text-sm ${darkMode ? 'placeholder:text-zinc-400' : 'placeholder:text-gray-500'}`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-  {/* Dropdown */}
-  {filteredResults.length > 0 && (
-    <div
-      className={`absolute top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto rounded-lg shadow-lg ${dropdownBg} z-50`}
-    >
-      {filteredResults.map((item) => (
-        <div
-          key={`${item.type}-${item.id}`}
-          className={`px-4 py-2 cursor-pointer hover:${darkMode ? 'bg-zinc-700' : 'bg-gray-300'}`}
-          onClick={() => handleSelectItem(item)}
-        >
-          <span className="font-semibold">{item.displayText}</span>{' '}
-          <small>({capitalizeFirstLetter(item.type)})</small>
+          {/* Dropdown */}
+          {filteredResults.length > 0 && (
+            <div
+              className={`absolute top-full left-0 right-0 mt-1 max-h-60 overflow-y-auto rounded-lg shadow-lg ${dropdownBg} z-50`}
+            >
+              {filteredResults.map((item) => (
+                <div
+                  key={`${item.type}-${item.id}`}
+                  className={`px-4 py-2 cursor-pointer hover:${darkMode ? 'bg-zinc-700' : 'bg-gray-300'}`}
+                  onClick={() => handleSelectItem(item)}
+                >
+                  <span className="font-semibold">{item.displayText}</span>{' '}
+                  <small>({capitalizeFirstLetter(item.type)})</small>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  )}
-</div>
-
-
 
         {/* Right Icons */}
         <div className="flex items-center space-x-4">
@@ -277,96 +275,16 @@ const filtered = combined.filter(item =>
         </div>
       </div>
 
-      {/* Main layout */}
-      <div className="flex flex-1 space-x-2 overflow-hidden">
-        {/* Sidebar */}
-        <div className={`${navBg} rounded-2xl p-4 w-64 flex-shrink-0 overflow-y-auto space-y-4`}>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Library size={20} />
-              <span className="font-semibold">Your Library</span>
-            </div>
-            <Plus size={20} />
-          </div>
-
-          <div className="flex space-x-2 text-xs">
-            <button className={`${btnBg} rounded-full px-3 py-1`}>Playlists</button>
-            <button className={`${btnBg} rounded-full px-3 py-1`}>Albums</button>
-            <button className={`${btnBg} rounded-full px-3 py-1`}>Artists</button>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Search size={16} className="cursor-pointer" />
-            <div className="flex items-center space-x-1 cursor-pointer text-sm">
-              <span>Recent</span>
-              <ChevronDown size={14} />
-            </div>
-          </div>
-
-          <div className="overflow-y-auto max-h-64 mt-2">
-            <p className={`${darkMode ? 'text-zinc-400' : 'text-gray-500'} text-sm`}>Library Item 1</p>
-            <p className={`${darkMode ? 'text-zinc-400' : 'text-gray-500'} text-sm`}>Library Item 2</p>
-          </div>
+      {/* Main Content */}
+      <div className={`${navBg} flex-1 rounded-2xl p-4 overflow-y-auto space-y-4`}>
+        <div className="flex space-x-2 text-xs">
+          <button className={`${btnBg} rounded-full px-3 py-1`}>All</button>
+          <button className={`${btnBg} rounded-full px-3 py-1`}>Music</button>
+          <button className={`${btnBg} rounded-full px-3 py-1`}>Podcasts</button>
         </div>
 
-        {/* Main Content */}
-        <div className={`${navBg} flex-1 rounded-2xl p-4 overflow-y-auto space-y-4`}>
-          <div className="flex space-x-2 text-xs">
-            <button className={`${btnBg} rounded-full px-3 py-1`}>All</button>
-            <button className={`${btnBg} rounded-full px-3 py-1`}>Music</button>
-            <button className={`${btnBg} rounded-full px-3 py-1`}>Podcasts</button>
-          </div>
-
-          <div className={`${darkMode ? 'text-zinc-400' : 'text-gray-600'} text-sm`}>
-            {/* Recommended music and sections go here */}
-          </div>
-        </div>
-
-        {/* Playing Bar (Right Side) */}
-        <div className={`${navBg} w-80 rounded-2xl p-4 flex-shrink-0 overflow-y-auto space-y-4`}>
-          <div>
-            <p className="text-sm animate-marquee whitespace-nowrap overflow-hidden">Now Playing Song Title</p>
-            <div className="flex items-center justify-between mt-1">
-              <ChevronDown size={16} />
-            </div>
-          </div>
-
-          <div className={`${inputBg} w-full h-48 rounded-lg flex items-center justify-center`}>
-            <Music size={48} />
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-sm animate-marquee whitespace-nowrap overflow-hidden">Song Title</p>
-            <div className="flex space-x-2 text-xs" style={{ color: darkMode ? '#a1a1aa' : '#4b5563' }}>
-              <span>Copy Link</span>
-              <span>Hide</span>
-              <span>❤️</span>
-            </div>
-            <p className="text-xs">Artist Name</p>
-          </div>
-
-          <div className={`${inputBg} p-2 rounded-xl`}>
-            <p className="text-xs font-semibold mb-2">Related Music Video</p>
-            <div className="flex items-center space-x-2">
-              <Music size={32} />
-              <div>
-                <p className="text-sm">Video Title</p>
-                <p className={`text-xs ${darkMode ? 'text-zinc-400' : 'text-gray-500'}`}>Artist Name</p>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${inputBg} p-2 rounded-xl`}>
-            <p className="text-xs font-semibold mb-1">About Artist</p>
-            <div className="flex items-center space-x-2">
-              <div className={`${darkMode ? 'bg-zinc-700' : 'bg-gray-300'} w-10 h-10 rounded-full`} />
-              <div>
-                <p className="text-sm">Artist Name</p>
-                <p className={`text-xs ${darkMode ? 'text-zinc-400' : 'text-gray-500'}`}>1.2M Monthly Listeners</p>
-              </div>
-              <button className="ml-auto bg-white text-black text-xs px-2 py-1 rounded-full">Follow</button>
-            </div>
-          </div>
+        <div className={`${darkMode ? 'text-zinc-400' : 'text-gray-600'} text-sm`}>
+          {/* Recommended music and sections go here */}
         </div>
       </div>
     </div>
