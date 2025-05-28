@@ -1,129 +1,149 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { auth, db } from './firebase';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { auth } from './firebase';
 import { Eye, EyeOff } from 'lucide-react';
 import logo from './assets/logo.png';
+import { checkSignupComplete } from './utils/signupUtils';
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [identifier, setIdentifier] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [processing, setProcessing] = useState(false); // 👈 added
+  const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    setProcessing(true); // 👈 start processing
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (processing) return;
+
+    setProcessing(true);
+    setError('');
+
     try {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      let emailToUse = identifier;
-
-      if (!emailPattern.test(identifier)) {
-        const usersRef = collection(db, 'users');
-        const q = query(usersRef, where('username', '==', identifier));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-          setError('No user found with that username.');
-          setProcessing(false); // 👈 stop processing
-          return;
-        }
-
-        emailToUse = querySnapshot.docs[0].data().email;
+      // Attempt to sign in
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Check if signup was completed
+      const isSignupComplete = await checkSignupComplete(userCredential.user.uid);
+      
+      if (!isSignupComplete) {
+        // Sign out the user
+        await auth.signOut();
+        setError('Please complete the signup process before logging in.');
+        return;
       }
 
-      await signInWithEmailAndPassword(auth, emailToUse, password);
-      navigate('/home');
-    } catch (err) {
-      console.error(err);
-      setError('Invalid login credentials.');
+      // If signup was completed, proceed with login
+      navigate('/');
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Invalid email or password');
     } finally {
-      setProcessing(false); // 👈 stop processing
+      setProcessing(false);
     }
   };
 
-  const handleSpotifyLogin = () => {
-    const clientId = 'd8d0a3f7b4d3409e8e199cc1c5b11bad';
-    const redirectUri = 'http://127.0.0.1:5175/callback';
-    const scopes = [
-      'user-read-private',
-      'user-read-email',
-      'playlist-read-private',
-      'playlist-read-collaborative'
-    ];
-
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&scope=${encodeURIComponent(scopes.join(' '))}`;
-
-    window.location.href = authUrl;
-  };
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-zinc-700 to-zinc-900 px-4">
-      <div className="bg-zinc-900 p-8 rounded-2xl shadow-lg w-full max-w-sm text-white text-center space-y-6">
-        <img src={logo} alt="TuneMusic Logo" className="w-15 h-15 mx-auto rounded-full object-cover" />
-        <h2 className="text-2xl font-semibold">Login to Tunemusic</h2>
-
-        <div className="space-y-3">
-          <div
-            onClick={handleSpotifyLogin}
-            className="bg-green-600 rounded-full py-2 cursor-pointer hover:bg-green-700 transition">
-            Continue with Spotify
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-950 p-4">
+      <div className="w-full max-w-md bg-zinc-900/50 backdrop-blur-xl rounded-2xl shadow-xl p-8 space-y-8">
+        {/* Logo and Header */}
+        <div className="flex flex-col items-center space-y-4">
+          <img src={logo} alt="TuneMusic Logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-800/50" />
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-white">Welcome back</h2>
+            <p className="text-zinc-400 text-sm mt-1">Sign in to your account</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-center text-zinc-500 my-4">
-          <hr className="flex-grow border-zinc-700" />
-          <span className="px-2 text-sm">Use Email</span>
-          <hr className="flex-grow border-zinc-700" />
-        </div>
+        <form onSubmit={handleLogin} className="space-y-6">
+          {/* Email Input */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-zinc-300">
+              Email address
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={processing}
+              className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-transparent transition-all duration-200"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
 
-        <input
-          type="text"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="Email"
-          className="w-full px-4 py-2 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-white"
-        />
+          {/* Password Input */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-zinc-300">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={processing}
+                className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-transparent transition-all duration-200"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => !processing && setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
 
-        <div className="relative mt-3">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full px-4 py-2 pr-12 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-white"
-          />
+          {/* Error Message */}
+          {error && (
+            <div className="text-red-500 text-sm bg-red-500/10 px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-white"
+            type="submit"
+            disabled={processing || !email || !password}
+            className={`w-full py-3 rounded-xl font-medium transition-all duration-200 
+              ${email && password && !processing
+                ? 'bg-red-800 hover:bg-red-700 text-white'
+                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+              }`}
           >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {processing ? 'Signing in...' : 'Sign in'}
+          </button>
+        </form>
+
+        {/* Links */}
+        <div className="space-y-4 text-center">
+          <button
+            onClick={() => navigate('/forgot-password')}
+            disabled={processing}
+            className="text-sm text-zinc-400 hover:text-white transition-colors"
+          >
+            Forgot your password?
+          </button>
+
+          <div className="flex items-center gap-2 justify-center">
+            <div className="h-px flex-1 bg-zinc-800"></div>
+            <span className="text-xs text-zinc-500">Don't have an account?</span>
+            <div className="h-px flex-1 bg-zinc-800"></div>
+          </div>
+
+          <button
+            onClick={() => navigate('/signup')}
+            disabled={processing}
+            className="w-full py-3 rounded-xl font-medium border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all duration-200"
+          >
+            Create an account
           </button>
         </div>
-
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-
-        <button
-          onClick={handleLogin}
-          disabled={processing}
-          className={`w-full ${
-            processing ? 'bg-zinc-700 cursor-not-allowed' : 'bg-red-800 hover:bg-red-900'
-          } transition py-3 rounded-full mt-4`}
-        >
-          {processing ? 'Processing...' : 'Login'}
-        </button>
-
-        <p className="text-sm text-zinc-400">
-          Not a member yet?{' '}
-          <span className="text-red-900 cursor-pointer hover:underline">
-            <Link to="/signup">Sign up to Tunemusic.</Link>
-          </span>
-        </p>
       </div>
     </div>
   );
