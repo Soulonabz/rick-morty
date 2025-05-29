@@ -1,6 +1,6 @@
 // SignupStep1.js
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Check, X } from 'lucide-react';
 import { auth, db } from './firebase';
@@ -12,7 +12,71 @@ export default function SignupStep1() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [authUser, setAuthUser] = useState(null);
   const navigate = useNavigate();
+
+  // Add effect to check auth state
+  useEffect(() => {
+    console.log('SignupStep1: Component mounted');
+    let mounted = true;
+    
+    const checkAuthState = () => {
+      const currentUser = auth.currentUser;
+      if (mounted) {
+        if (currentUser) {
+          console.log('Initial auth check - User found:', currentUser.uid);
+          setAuthUser(currentUser);
+          setLoading(false);
+        } else {
+          console.log('Initial auth check - No user found, waiting for auth state change');
+        }
+      }
+    };
+
+    // Check initial state
+    checkAuthState();
+    
+    // Listen for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log('Auth state changed:', user?.uid);
+      if (mounted) {
+        setAuthUser(user);
+        setLoading(false);
+
+        if (!user) {
+          console.log('No user found after auth state change, redirecting to signup');
+          navigate('/signup');
+        }
+      }
+    });
+
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
+  }, [navigate]);
+
+  // If still loading or no user, show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-950 p-4">
+        <div className="w-full max-w-md bg-zinc-900/50 backdrop-blur-xl rounded-2xl shadow-xl p-8 space-y-8">
+          <div className="flex flex-col items-center space-y-4">
+            <img src={logo} alt="TuneMusic Logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-800/50" />
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-white">Loading...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If no user after loading, don't render the form
+  if (!authUser) {
+    return null;
+  }
 
   // Password validation checks
   const hasLetter = /[a-zA-Z]/.test(password);
@@ -26,26 +90,28 @@ export default function SignupStep1() {
     if (!allValid || processing) return;
     
     setProcessing(true);
-    const user = auth.currentUser;
+    console.log('HandleSubmit - Current user:', authUser.uid);
 
-    if (user) {
-      try {
-        // Update the password in Firebase Authentication
-        await updatePassword(user, password);
+    try {
+      // Update the password in Firebase Authentication
+      await updatePassword(authUser, password);
 
-        // Update the password in Firestore
-        const userRef = doc(db, 'users', user.uid);
-        await updateDoc(userRef, {
-          password: password
-        });
+      // Update the password in Firestore
+      const userRef = doc(db, 'users', authUser.uid);
+      await updateDoc(userRef, {
+        password: password
+      });
 
-        // Proceed to the next step
-        navigate('/signupstep2');
-      } catch (error) {
-        console.error('Error updating password: ', error);
-      } finally {
-        setProcessing(false);
+      // Proceed to the next step
+      navigate('/signupstep2');
+    } catch (error) {
+      console.error('Error updating password: ', error);
+      if (error.code === 'auth/requires-recent-login') {
+        // If the error is due to requiring recent login, redirect to signup
+        navigate('/signup');
       }
+    } finally {
+      setProcessing(false);
     }
   };
 

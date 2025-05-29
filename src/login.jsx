@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
@@ -13,6 +13,21 @@ export default function Login() {
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem('darkMode');
+    return savedMode !== null ? JSON.parse(savedMode) : true;
+  });
+
+  // Add effect to update dark mode when localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedMode = localStorage.getItem('darkMode');
+      setDarkMode(savedMode !== null ? JSON.parse(savedMode) : true);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,21 +61,21 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-950 p-4">
-      <div className="w-full max-w-md bg-zinc-900/50 backdrop-blur-xl rounded-2xl shadow-xl p-8 space-y-8">
+    <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gradient-to-br from-zinc-800 to-zinc-950' : 'bg-gradient-to-br from-gray-100 to-white'} p-4`}>
+      <div className={`w-full max-w-md ${darkMode ? 'bg-zinc-900/50' : 'bg-white'} backdrop-blur-xl rounded-2xl shadow-xl p-8 space-y-8`}>
         {/* Logo and Header */}
         <div className="flex flex-col items-center space-y-4">
           <img src={logo} alt="TuneMusic Logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-800/50" />
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-white">Welcome back</h2>
-            <p className="text-zinc-400 text-sm mt-1">Sign in to your account</p>
+            <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Welcome back</h2>
+            <p className={`text-sm mt-1 ${darkMode ? 'text-zinc-400' : 'text-gray-500'}`}>Sign in to your account</p>
           </div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Email Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-zinc-300">
+            <label className={`block text-sm font-medium ${darkMode ? 'text-zinc-300' : 'text-gray-700'}`}>
               Email address
             </label>
             <input
@@ -68,7 +83,10 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={processing}
-              className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-transparent transition-all duration-200"
+              className={`w-full px-4 py-3 ${darkMode ? 'bg-zinc-800/50 border-zinc-700' : 'bg-gray-100 border-gray-300'} 
+                border rounded-xl ${darkMode ? 'text-white' : 'text-gray-900'} 
+                placeholder-${darkMode ? 'zinc' : 'gray'}-500 focus:outline-none focus:ring-2 focus:ring-red-800 
+                focus:border-transparent transition-all duration-200`}
               placeholder="Enter your email"
               required
             />
@@ -76,7 +94,7 @@ export default function Login() {
 
           {/* Password Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-zinc-300">
+            <label className={`block text-sm font-medium ${darkMode ? 'text-zinc-300' : 'text-gray-700'}`}>
               Password
             </label>
             <div className="relative">
@@ -85,14 +103,17 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={processing}
-                className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:border-transparent transition-all duration-200"
+                className={`w-full px-4 py-3 ${darkMode ? 'bg-zinc-800/50 border-zinc-700' : 'bg-gray-100 border-gray-300'} 
+                  border rounded-xl ${darkMode ? 'text-white' : 'text-gray-900'} 
+                  placeholder-${darkMode ? 'zinc' : 'gray'}-500 focus:outline-none focus:ring-2 focus:ring-red-800 
+                  focus:border-transparent transition-all duration-200`}
                 placeholder="Enter your password"
                 required
               />
               <button
                 type="button"
                 onClick={() => !processing && setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                className={`absolute right-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-zinc-400 hover:text-white' : 'text-gray-400 hover:text-gray-600'} transition-colors`}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -113,7 +134,7 @@ export default function Login() {
             className={`w-full py-3 rounded-xl font-medium transition-all duration-200 
               ${email && password && !processing
                 ? 'bg-red-800 hover:bg-red-700 text-white'
-                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                : `${darkMode ? 'bg-zinc-800 text-zinc-500' : 'bg-gray-200 text-gray-400'} cursor-not-allowed`
               }`}
           >
             {processing ? 'Signing in...' : 'Sign in'}
@@ -125,21 +146,24 @@ export default function Login() {
           <button
             onClick={() => navigate('/forgot-password')}
             disabled={processing}
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className={`text-sm ${darkMode ? 'text-zinc-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'} transition-colors`}
           >
             Forgot your password?
           </button>
 
           <div className="flex items-center gap-2 justify-center">
-            <div className="h-px flex-1 bg-zinc-800"></div>
-            <span className="text-xs text-zinc-500">Don't have an account?</span>
-            <div className="h-px flex-1 bg-zinc-800"></div>
+            <div className={`h-px flex-1 ${darkMode ? 'bg-zinc-800' : 'bg-gray-200'}`}></div>
+            <span className={`text-xs ${darkMode ? 'text-zinc-500' : 'text-gray-500'}`}>Don't have an account?</span>
+            <div className={`h-px flex-1 ${darkMode ? 'bg-zinc-800' : 'bg-gray-200'}`}></div>
           </div>
 
           <button
             onClick={() => navigate('/signup')}
             disabled={processing}
-            className="w-full py-3 rounded-xl font-medium border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600 transition-all duration-200"
+            className={`w-full py-3 rounded-xl font-medium border transition-all duration-200
+              ${darkMode 
+                ? 'border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600' 
+                : 'border-gray-300 text-gray-600 hover:text-gray-900 hover:border-gray-400'}`}
           >
             Create an account
           </button>

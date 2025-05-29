@@ -27,7 +27,7 @@ export const songs = [
     id: 4, 
     title: "Tití Me Preguntó", 
     artistId: 2, 
-    url: "/audio/titi-me-pregunto.mp3",
+    url: "/audio/tití-me-preguntó.mp3",
     imageUrl: "/images/bad_bunny.jpg"
   },
   { 
@@ -50,7 +50,7 @@ export const songs = [
     id: 7, 
     title: "God's Plan", 
     artistId: 3, 
-    url: "/audio/gods-plan.mp3",
+    url: "/audio/gods plan.mp3",
     imageUrl: "/images/drake.jpg"
   },
   { 
@@ -97,21 +97,21 @@ export const songs = [
     title: "Blinding Lights", 
     artistId: 5, 
     url: "/audio/blinding-lights.mp3",
-    imageUrl: "/images/the_weeknd.jpg"
+    imageUrl: "/images/the-weeknd.jpg"
   },
   { 
     id: 14, 
     title: "Save Your Tears", 
     artistId: 5, 
     url: "/audio/save-your-tears.mp3",
-    imageUrl: "/images/the_weeknd.jpg"
+    imageUrl: "/images/the-weeknd.jpg"
   },
   { 
     id: 15, 
     title: "Starboy", 
     artistId: 5, 
     url: "/audio/starboy.mp3",
-    imageUrl: "/images/the_weeknd.jpg"
+    imageUrl: "/images/the-weeknd.jpg"
   },
 
   // 6. Olivia Rodrigo
@@ -120,21 +120,21 @@ export const songs = [
     title: "Drivers License", 
     artistId: 6, 
     url: "/audio/drivers-license.mp3",
-    imageUrl: "/images/olivia_rodrigo.jpg"
+    imageUrl: "/images/olivia-rodrigo.jpg"
   },
   { 
     id: 17, 
     title: "Good 4 U", 
     artistId: 6, 
     url: "/audio/good-4-u.mp3",
-    imageUrl: "/images/olivia_rodrigo.jpg"
+    imageUrl: "/images/olivia-rodrigo.jpg"
   },
   { 
     id: 18, 
     title: "Deja Vu", 
     artistId: 6, 
     url: "/audio/deja-vu.mp3",
-    imageUrl: "/images/olivia_rodrigo.jpg"
+    imageUrl: "/images/olivia-rodrigo.jpg"
   },
 
   // 7. Doja Cat
@@ -143,21 +143,21 @@ export const songs = [
     title: "Say So", 
     artistId: 7, 
     url: "/audio/say-so.mp3",
-    imageUrl: "/images/doja_cat.jpg"
+    imageUrl: "/images/doja-cat.jpg"
   },
   { 
     id: 20, 
     title: "Kiss Me More", 
     artistId: 7, 
     url: "/audio/kiss-me-more.mp3",
-    imageUrl: "/images/doja_cat.jpg"
+    imageUrl: "/images/doja-cat.jpg"
   },
   { 
     id: 21, 
     title: "Woman", 
     artistId: 7, 
     url: "/audio/woman.mp3",
-    imageUrl: "/images/doja_cat.jpg"
+    imageUrl: "/images/doja-cat.jpg"
   },
 
   // 8. Billie Eilish
@@ -166,21 +166,21 @@ export const songs = [
     title: "Bad Guy", 
     artistId: 8, 
     url: "/audio/bad-guy.mp3",
-    imageUrl: "/images/billie_eilish.jpg"
+    imageUrl: "/images/billie_ellish.jpg"
   },
   { 
     id: 23, 
     title: "Everything I Wanted", 
     artistId: 8, 
     url: "/audio/everything-i-wanted.mp3",
-    imageUrl: "/images/billie_eilish.jpg"
+    imageUrl: "/images/billie_ellish.jpg"
   },
   { 
     id: 24, 
     title: "Happier Than Ever", 
     artistId: 8, 
     url: "/audio/happier-than-ever.mp3",
-    imageUrl: "/images/billie_eilish.jpg"
+    imageUrl: "/images/billie_ellish.jpg"
   },
 
   // 9. Ed Sheeran
@@ -189,21 +189,21 @@ export const songs = [
     title: "Shape of You", 
     artistId: 9, 
     url: "/audio/shape-of-you.mp3",
-    imageUrl: "/images/ed_sheeran.jpg"
+    imageUrl: "/images/ed-sheeran.jpg"
   },
   { 
     id: 26, 
     title: "Perfect", 
     artistId: 9, 
     url: "/audio/perfect.mp3",
-    imageUrl: "/images/ed_sheeran.jpg"
+    imageUrl: "/images/ed-sheeran.jpg"
   },
   { 
     id: 27, 
     title: "Photograph", 
     artistId: 9, 
     url: "/audio/photograph.mp3",
-    imageUrl: "/images/ed_sheeran.jpg"
+    imageUrl: "/images/ed-sheeran.jpg"
   },
 
   // 10. Adele
@@ -235,21 +235,21 @@ export const songs = [
     title: "Watermelon Sugar", 
     artistId: 11, 
     url: "/audio/watermelon-sugar.mp3",
-    imageUrl: "/images/harry_styles.jpg"
+    imageUrl: "/images/harry-styles.jpg"
   },
   { 
     id: 32, 
     title: "Sign of the Times", 
     artistId: 11, 
     url: "/audio/sign-of-the-times.mp3",
-    imageUrl: "/images/harry_styles.jpg"
+    imageUrl: "/images/harry-styles.jpg"
   },
   { 
     id: 33, 
     title: "Adore You", 
     artistId: 11, 
     url: "/audio/adore-you.mp3",
-    imageUrl: "/images/harry_styles.jpg"
+    imageUrl: "/images/harry-styles.jpg"
   },
 
   // 12. Lizzo
@@ -287,7 +287,7 @@ export const songs = [
     id: 38, 
     title: "Hot Girl Summer", 
     artistId: 13, 
-    url: "/audio/hot-girl-summer.mp3",
+    url: "/audio/hot_girl_summer.mp3",
     imageUrl: "/images/megan_thee_stallion.jpg"
   },
   { 
@@ -350,21 +350,21 @@ export const songs = [
     title: "Levitating", 
     artistId: 16, 
     url: "/audio/levitating.mp3",
-    imageUrl: "/images/dua_lipa.jpg"
+    imageUrl: "/images/dua-lipa.jpg"
   },
   { 
     id: 47, 
     title: "Don't Start Now", 
     artistId: 16, 
     url: "/audio/dont-start-now.mp3",
-    imageUrl: "/images/dua_lipa.jpg"
+    imageUrl: "/images/dua-lipa.jpg"
   },
   { 
     id: 48, 
     title: "New Rules", 
     artistId: 16, 
     url: "/audio/new-rules.mp3",
-    imageUrl: "/images/dua_lipa.jpg"
+    imageUrl: "/images/dua-lipa.jpg"
   },
 
   // 17. Travis Scott
@@ -373,21 +373,21 @@ export const songs = [
     title: "Sicko Mode", 
     artistId: 17, 
     url: "/audio/sicko-mode.mp3",
-    imageUrl: "/images/travis_scott.jpg"
+    imageUrl: "/images/travis-scott.jpg"
   },
   { 
     id: 50, 
     title: "Goosebumps", 
     artistId: 17, 
     url: "/audio/goosebumps.mp3",
-    imageUrl: "/images/travis_scott.jpg"
+    imageUrl: "/images/travis-scott.jpg"
   },
   { 
     id: 51, 
     title: "Highest in the Room", 
     artistId: 17, 
     url: "/audio/highest-in-the-room.mp3",
-    imageUrl: "/images/travis_scott.jpg"
+    imageUrl: "/images/travis-scott.jpg"
   },
 
   // 18. Post Malone
@@ -419,21 +419,21 @@ export const songs = [
     title: "Stitches", 
     artistId: 19, 
     url: "/audio/stitches.mp3",
-    imageUrl: "/images/shawn_mendes.jpg"
+    imageUrl: "/images/shawn-mendes.jpg"
   },
   { 
     id: 56, 
     title: "Treat You Better", 
     artistId: 19, 
     url: "/audio/treat-you-better.mp3",
-    imageUrl: "/images/shawn_mendes.jpg"
+    imageUrl: "/images/shawn-mendes.jpg"
   },
   { 
     id: 57, 
     title: "Señorita", 
     artistId: 19, 
-    url: "/audio/senorita.mp3",
-    imageUrl: "/images/shawn_mendes.jpg"
+    url: "/audio/señorita.mp3",
+    imageUrl: "/images/shawn-mendes.jpg"
   },
 
   // 20. Cardi B
@@ -465,21 +465,21 @@ export const songs = [
     title: "Believer", 
     artistId: 21, 
     url: "/audio/believer.mp3",
-    imageUrl: "/images/imagine_dragons.jpg"
+    imageUrl: "/images/imagine-dragon.jpg"
   },
   { 
     id: 62, 
     title: "Radioactive", 
     artistId: 21, 
     url: "/audio/radioactive.mp3",
-    imageUrl: "/images/imagine_dragons.jpg"
+    imageUrl: "/images/imagine-dragon.jpg"
   },
   { 
     id: 63, 
     title: "Thunder", 
     artistId: 21, 
     url: "/audio/thunder.mp3",
-    imageUrl: "/images/imagine_dragons.jpg"
+    imageUrl: "/images/imagine-dragon.jpg"
   },
 
   // 22. BLACKPINK
@@ -487,7 +487,7 @@ export const songs = [
     id: 64, 
     title: "DDU-DU DDU-DU", 
     artistId: 22, 
-    url: "/audio/ddu-du-ddu-du.mp3",
+    url: "/audio/DDU-DU-DDU-DU.mp3",
     imageUrl: "/images/blackpink.jpg"
   },
   { 
@@ -524,31 +524,31 @@ export const songs = [
     id: 69, 
     title: "Boy With Luv", 
     artistId: 23, 
-    url: "/audio/boy-with-luv.mp3",
+    url: "/audio/boy-with-love.mp3",
     imageUrl: "/images/bts.jpg"
   },
 
   // 24. Lil Nas X
   { 
     id: 70, 
-    title: "Montero (Call Me By Your Name)", 
+    title: "MONTERO (Call Me By Your Name)", 
     artistId: 24, 
-    url: "/audio/montero.mp3",
-    imageUrl: "/images/lil_nas_x.jpg"
+    url: "/audio/MONTERO.mp3",
+    imageUrl: "/images/lil-nas-x.jpg"
   },
   { 
     id: 71, 
     title: "Old Town Road", 
     artistId: 24, 
     url: "/audio/old-town-road.mp3",
-    imageUrl: "/images/lil_nas_x.jpg"
+    imageUrl: "/images/lil-nas-x.jpg"
   },
   { 
     id: 72, 
     title: "Industry Baby", 
     artistId: 24, 
     url: "/audio/industry-baby.mp3",
-    imageUrl: "/images/lil_nas_x.jpg"
+    imageUrl: "/images/lil-nas-x.jpg"
   },
 
   // 25. SZA
@@ -584,9 +584,9 @@ export const songs = [
   },
   { 
     id: 77, 
-    title: "Without You", 
+    title: "WITHOUT YOU", 
     artistId: 26, 
-    url: "/audio/without-you.mp3",
+    url: "/audio/WITHOUT-YOU.mp3",
     imageUrl: "/images/the_kid_laroi.jpg"
   },
   { 
@@ -639,7 +639,7 @@ export const songs = [
     id: 84, 
     title: "Back to the Streets", 
     artistId: 28, 
-    url: "/audio/back-to-the-streets.mp3",
+    url: "/audio/back-to-the-street.mp3",
     imageUrl: "/images/saweetie.jpg"
   },
 
@@ -649,21 +649,21 @@ export const songs = [
     title: "Wrecking Ball", 
     artistId: 29, 
     url: "/audio/wrecking-ball.mp3",
-    imageUrl: "/images/miley_cyrus.jpg"
+    imageUrl: "/images/miley-cyrus.jpg"
   },
   { 
     id: 86, 
     title: "Party in the U.S.A.", 
     artistId: 29, 
     url: "/audio/party-in-the-usa.mp3",
-    imageUrl: "/images/miley_cyrus.jpg"
+    imageUrl: "/images/miley-cyrus.jpg"
   },
   { 
     id: 87, 
     title: "Midnight Sky", 
     artistId: 29, 
     url: "/audio/midnight-sky.mp3",
-    imageUrl: "/images/miley_cyrus.jpg"
+    imageUrl: "/images/miley-cyrus.jpg"
   },
 
   // 30. KarbineHXC
@@ -675,4 +675,70 @@ export const songs = [
     imageUrl: "/images/karbine.jpg"
   },
 
+  // Adding new songs that have files
+  // Avril Lavigne Songs
+  { 
+    id: 89, 
+    title: "Complicated", 
+    artistId: 31, 
+    url: "/audio/complicated.mp3",
+    imageUrl: "/images/avril_lavigne.jpg"
+  },
+
+  // My Chemical Romance Songs
+  { 
+    id: 90, 
+    title: "Helena", 
+    artistId: 33, 
+    url: "/audio/helena.mp3",
+    imageUrl: "/images/my_chemical_romance.jpg"
+  },
+  { 
+    id: 91, 
+    title: "I Don't Love You", 
+    artistId: 33, 
+    url: "/audio/i-dont-love-you.mp3",
+    imageUrl: "/images/my_chemical_romance.jpg"
+  },
+
+  // Pierce The Veil Songs
+  { 
+    id: 92, 
+    title: "Hell Above", 
+    artistId: 35, 
+    url: "/audio/hell-above.mp3",
+    imageUrl: "/images/pierce_the_veil.jpg"
+  },
+
+  // Keshi Songs
+  { 
+    id: 93, 
+    title: "LIMBO", 
+    artistId: 32, 
+    url: "/audio/limbo.mp3",
+    imageUrl: "/images/keshi.jpg"
+  },
+  { 
+    id: 94, 
+    title: "B A N D A I D S", 
+    artistId: 32, 
+    url: "/audio/bandaids.mp3",
+    imageUrl: "/images/keshi.jpg"
+  },
+
+  // Nirvana Songs
+  { 
+    id: 95, 
+    title: "Wish You Were Here", 
+    artistId: 34, 
+    url: "/audio/wish-you-were-here.mp3",
+    imageUrl: "/images/nirvana.jpg"
+  },
+  { 
+    id: 96, 
+    title: "Smells Like Teen Spirit", 
+    artistId: 34, 
+    url: "/audio/smells_like_teen_spirit.mp3",
+    imageUrl: "/images/nirvana.jpg"
+  }
 ];

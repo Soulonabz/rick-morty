@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { 
+  BrowserRouter as Router, 
+  Route, 
+  Routes,
+  createRoutesFromElements,
+  createBrowserRouter,
+  RouterProvider
+} from 'react-router-dom';
 import Loadingscreen from './loadingscreen';
 import Login from './login';
 import Signup from './signup';
@@ -13,7 +20,6 @@ import Profile from './profile';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase auth
 import SpotifyCallBack from './spotifycallback';
 import SongPlayer from './songplayer';
-
 
 function App() {
   // User state
@@ -29,17 +35,20 @@ function App() {
     });
 
     // Clean up the listener when the component unmounts
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   if (loading) {
     return <Loadingscreen />; // Show loading screen while checking user auth state
   }
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={user ? <Home /> : <Login />} /> {/* Redirect based on user */}
+  // Create router with future flags
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupstep1" element={<SignupStep1 />} />
@@ -51,9 +60,17 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/callback" element={<SpotifyCallBack />} />
         <Route path="/songplayer" element={<SongPlayer />} />
-      </Routes>
-    </Router>
+      </Route>
+    ),
+    {
+      future: {
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }
+    }
   );
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
